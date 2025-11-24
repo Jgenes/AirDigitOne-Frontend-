@@ -4,38 +4,42 @@ import Footer from "../../components/Footer";
 import "../../app.css"; 
 import api from "../../axios";
 import { toast } from "react-toastify";
-
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [emailOrPhone, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const form = { emailOrPhone, password, rememberMe }; 
-
-    setLoading(true); 
+    const form = { emailOrPhone, password, rememberMe };
+    setLoading(true);
 
     try {
       const res = await api.post("/login", form);
 
-      toast.success("Login successfully");
+      toast.success("Login successful");
 
-      // redirect after 1 second
+      // Save emailOrPhone so OTP page never fails
+      localStorage.setItem("emailOrPhone", emailOrPhone);
+
+      // Redirect to OTP page with state (optional extra)
       setTimeout(() => {
-        window.location.href = "/otp";
-      }, 1000);
+        navigate("/otp", { state: { emailOrPhone } });
+      }, 800);
     } 
     catch (err) {
- const message =
-    err.response?.data?.message ||
-    err.response?.data?.error ||
-    "Login failed";
-
-  toast.error(message);    } 
+      const message =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        "Login failed";
+      toast.error(message);
+    } 
     finally {
       setLoading(false);
     }
@@ -49,14 +53,14 @@ export default function Login() {
         <form className="login-form" onSubmit={handleSubmit}>
           <h2 className="login-title">Login</h2>
 
-          {/* Email */}
+          {/* Email / Phone */}
           <div className="input-group">
-            <label htmlFor="email">Email Address</label>
+            <label htmlFor="emailOrPhone">Email or Phone</label>
             <input
-              id="email"
-              type="email"
+              id="emailOrPhone"
+              type="text"   // FIX: Accept both email and phone
               name="emailOrPhone"
-              placeholder="Enter your email"
+              placeholder="Enter email or phone"
               value={emailOrPhone}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -89,13 +93,13 @@ export default function Login() {
           </div>
 
           {/* Login Button */}
-          <button type="submit" className="login-btn">
+          <button type="submit" className="login-btn" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </button>
 
           {/* Extra links */}
           <div className="extra-links">
-            <a href="#">Forgot Password?</a>
+            <a href="/forget_password">Forgot Password?</a>
             <span> | </span>
             <a href="/register">Create an Account</a>
           </div>

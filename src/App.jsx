@@ -5,7 +5,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Home from './pages/Home'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register';
+import Forget from './pages/auth/Forget';
 import OTPForm from './pages/auth/Otp';
+import ResetPassword from './pages/auth/ResetPassword';
 function App() {
   const [count, setCount] = useState(0)
 
@@ -22,6 +24,8 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/otp' element={<OTPForm />} />
+        <Route path='/forget_password' element={<Forget />} />
+        <Route path='/reset-password' element={<ResetPassword />} />
       </Routes>
     </>
   )
