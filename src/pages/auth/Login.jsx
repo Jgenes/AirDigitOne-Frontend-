@@ -25,10 +25,8 @@ export default function Login() {
 
       toast.success("Login successful");
 
-      // Save emailOrPhone so OTP page never fails
       localStorage.setItem("emailOrPhone", emailOrPhone);
 
-      // Redirect to OTP page with state (optional extra)
       setTimeout(() => {
         navigate("/otp", { state: { emailOrPhone } });
       }, 800);

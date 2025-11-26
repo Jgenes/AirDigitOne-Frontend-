@@ -2,10 +2,13 @@
 import TopBar from "../components/TopBar"
 import Footer from "../components/Footer"
 import HeadLine from "../components/HeadLine"
-import post03 from "../assets/images/post-03.jpg";
+import post01 from "../assets/images/post-01.jpg";
 import post02 from "../assets/images/post-02.jpg";
+import post03 from "../assets/images/post-03.jpg";
+import post04 from "../assets/images/post-04.jpg";
 
 export default function Home(){
+
     return(
         <>
             <TopBar />
@@ -17,14 +20,17 @@ export default function Home(){
 
       {/* LEFT BIG BOX */}
       <div className="col-md-6 p-rl-1 p-b-2">
-        <div
-          className="bg-img1 size-a-3 how1 pos-relative"
-          style={{
-            backgroundImage: `url(/images/post-01.jpg)`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
+        
+			 <div
+                className="bg-img1 size-a-3 how1 pos-relative"
+                style={{
+                  backgroundImage: `url(${post01})`, // use imported image
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                  
+                }}
+              >
           <a href="#" className="dis-block how1-child1 trans-03"></a>
 
           <div className="flex-col-e-s s-full p-rl-25 p-tb-20">
@@ -57,13 +63,16 @@ export default function Home(){
           {/* TOP RIGHT IMAGE */}
           <div className="col-12 p-rl-1 p-b-2">
             <div
-              className="bg-img1 size-a-4 how1 pos-relative"
-              style={{
-                backgroundImage: `url(/images/post-02.jpg)`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
+                className="bg-img1 size-a-3 how1 pos-relative"
+                style={{
+                  backgroundImage: `url(${post02})`, // use imported image
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                  width: "100%",
+                  height: "250px",
+                }}
+              >
               <a href="#" className="dis-block how1-child1 trans-03"></a>
 
               <div className="flex-col-e-s s-full p-rl-25 p-tb-24">
@@ -83,13 +92,16 @@ export default function Home(){
           {/* BOTTOM LEFT */}
           <div className="col-sm-6 p-rl-1 p-b-2">
             <div
-              className="bg-img1 size-a-5 how1 pos-relative"
-              style={{
-                backgroundImage: `url(/images/post-03.jpg)`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
+                className="bg-img1 size-a-3 how1 pos-relative"
+                style={{
+                  backgroundImage: `url(${post03})`, // use imported image
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                  width: "100%",
+                  height: "188px",
+                }}
+              >
               <a href="#" className="dis-block how1-child1 trans-03"></a>
 
               <div className="flex-col-e-s s-full p-rl-25 p-tb-20">
@@ -108,14 +120,17 @@ export default function Home(){
 
           {/* BOTTOM RIGHT */}
           <div className="col-sm-6 p-rl-1 p-b-2">
-            <div
-              className="bg-img1 size-a-5 how1 pos-relative"
-              style={{
-                backgroundImage: `url(/images/post-04.jpg)`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
+        <div
+                className="bg-img1 size-a-3 how1 pos-relative"
+                style={{
+                  backgroundImage: `url(${post04})`, 
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                  width: "100%",
+                  height: "188px",
+                }}
+              >
               <a href="#" className="dis-block how1-child1 trans-03"></a>
 
               <div className="flex-col-e-s s-full p-rl-25 p-tb-20">
@@ -148,7 +163,7 @@ export default function Home(){
 						<div className="tab01 p-b-20">
 							<div className="tab01-head how2 how2-cl1 bocl12 flex-s-c m-r-10 m-r-0-sr991">
 								<h3 className="f1-m-2 cl12 tab01-title">
-									Entertainment
+									Sports
 								</h3>
 
 								<ul className="nav nav-tabs" role="tablist">
@@ -157,19 +172,19 @@ export default function Home(){
 									</li>
 
 									<li className="nav-item">
-										<a className="nav-link" data-toggle="tab" href="#tab1-2" role="tab">Celebrity</a>
+										<a className="nav-link" data-toggle="tab" href="#tab1-2" role="tab">Football</a>
 									</li>
 
 									<li className="nav-item">
-										<a className="nav-link" data-toggle="tab" href="#tab1-3" role="tab">Movies</a>
+										<a className="nav-link" data-toggle="tab" href="#tab1-3" role="tab">Basketball</a>
 									</li>
 
 									<li className="nav-item">
-										<a className="nav-link" data-toggle="tab" href="#tab1-4" role="tab">Music</a>
+										<a className="nav-link" data-toggle="tab" href="#tab1-4" role="tab">Golf</a>
 									</li>
 
 									<li className="nav-item">
-										<a className="nav-link" data-toggle="tab" href="#tab1-5" role="tab">Games</a>
+										<a className="nav-link" data-toggle="tab" href="#tab1-5" role="tab">Tennis</a>
 									</li>
 
 									<li className="nav-item-more dropdown dis-none">
@@ -796,7 +811,7 @@ export default function Home(){
 						<div className="tab01 p-b-20">
 							<div className="tab01-head how2 how2-cl2 bocl12 flex-s-c m-r-10 m-r-0-sr991">
 								<h3 className="f1-m-2 cl13 tab01-title">
-									Business
+									Vacancies
 								</h3>
 
 								<ul className="nav nav-tabs" role="tablist">
@@ -805,15 +820,15 @@ export default function Home(){
 									</li>
 
 									<li className="nav-item">
-										<a className="nav-link" data-toggle="tab" href="#tab2-2" role="tab">Finance</a>
+										<a className="nav-link" data-toggle="tab" href="#tab2-2" role="tab">IT</a>
 									</li>
 
 									<li className="nav-item">
-										<a className="nav-link" data-toggle="tab" href="#tab2-3" role="tab">Money & Markets</a>
+										<a className="nav-link" data-toggle="tab" href="#tab2-3" role="tab">Accounting</a>
 									</li>
 
 									<li className="nav-item">
-										<a className="nav-link" data-toggle="tab" href="#tab2-4" role="tab">Small Business</a>
+										<a className="nav-link" data-toggle="tab" href="#tab2-4" role="tab">Human Resources</a>
 									</li>
 
 									<li className="nav-item-more dropdown dis-none">
@@ -1320,7 +1335,7 @@ export default function Home(){
 						<div className="tab01 p-b-20">
 							<div className="tab01-head how2 how2-cl3 bocl12 flex-s-c m-r-10 m-r-0-sr991">
 								<h3 className="f1-m-2 cl14 tab01-title">
-									Travel
+									News
 								</h3>
 
 								<ul className="nav nav-tabs" role="tablist">
@@ -1329,19 +1344,19 @@ export default function Home(){
 									</li>
 
 									<li className="nav-item">
-										<a className="nav-link" data-toggle="tab" href="#tab3-2" role="tab">Hotels</a>
+										<a className="nav-link" data-toggle="tab" href="#tab3-2" role="tab">Political</a>
 									</li>
 
 									<li className="nav-item">
-										<a className="nav-link" data-toggle="tab" href="#tab3-3" role="tab">Flight</a>
+										<a className="nav-link" data-toggle="tab" href="#tab3-3" role="tab">Entertaiment</a>
 									</li>
 
 									<li className="nav-item">
-										<a className="nav-link" data-toggle="tab" href="#tab3-4" role="tab">Beachs</a>
+										<a className="nav-link" data-toggle="tab" href="#tab3-4" role="tab">Finance</a>
 									</li>
 
 									<li className="nav-item">
-										<a className="nav-link" data-toggle="tab" href="#tab3-5" role="tab">Culture</a>
+										<a className="nav-link" data-toggle="tab" href="#tab3-5" role="tab">International</a>
 									</li>
 
 									<li className="nav-item-more dropdown dis-none">

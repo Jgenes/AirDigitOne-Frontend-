@@ -144,3 +144,65 @@
 .otp-submit-btn:hover {
   background-color: #45a049;
 }
+
+.interest-page-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.interest-card {
+    width: 100%;
+    max-width: 450px;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.interest-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.interest-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.interest-label {
+    font-weight: 600;
+    color: #333;
+}
+
+.interest-input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    background: #f9f9f9;
+}
+
+.interest-input:focus {
+    outline: none;
+    border-color: #007bff;
+    background: #fff;
+}
+
+.interest-button {
+    padding: 12px;
+    background: #007bff;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.interest-button:disabled {
+    background: #75a9e4;
+}

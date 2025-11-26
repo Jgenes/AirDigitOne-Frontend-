@@ -3,13 +3,13 @@ import { toast } from "react-toastify";
 import api from "../../axios";
 import TopBar from "../../components/TopBar";
 import Footer from "../../components/Footer";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../../app.css";
 
 export default function OTPPage({ emailOrPhone: propEmail }) {
   const location = useLocation();
+  const navigate = useNavigate();
 
-  // Get emailOrPhone safely from multiple places
   const emailOrPhone =
     propEmail ||
     location.state?.emailOrPhone ||
@@ -21,29 +21,27 @@ export default function OTPPage({ emailOrPhone: propEmail }) {
   const [timer, setTimer] = useState(30);
   const inputsRef = useRef([]);
 
-  // If user reaches OTP screen without emailOrPhone, stop them
   useEffect(() => {
     if (!emailOrPhone) {
-      toast.error("Missing email or phone number");
-      window.location.href = "/login";
+      toast.error("Missing email or phone");
+      navigate("/login");
+    } else {
+      localStorage.setItem("emailOrPhone", emailOrPhone);
     }
   }, []);
 
-  // Start countdown for resend
   useEffect(() => {
     if (timer <= 0) return;
     const interval = setInterval(() => setTimer((t) => t - 1), 1000);
     return () => clearInterval(interval);
   }, [timer]);
 
-  // Handle OTP input
   const handleChange = (e, index) => {
     const value = e.target.value;
     if (/^[0-9]?$/.test(value)) {
-      const newOtp = [...otp];
-      newOtp[index] = value;
-      setOtp(newOtp);
-
+      const updated = [...otp];
+      updated[index] = value;
+      setOtp(updated);
       if (value && index < 5) inputsRef.current[index + 1].focus();
     }
   };
@@ -54,51 +52,60 @@ export default function OTPPage({ emailOrPhone: propEmail }) {
     }
   };
 
-  // Submit OTP
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const code = otp.join("");
+    const code = otp.join("").trim();
 
-    if (!emailOrPhone) {
-      toast.error("Missing email/phone");
-      return;
-    }
-    if (code.length !== 6) {
-      toast.error("Please enter full 6-digit OTP");
-      return;
-    }
+    if (!emailOrPhone) return toast.error("Missing email/phone");
+    if (code.length !== 6) return toast.error("Enter full 6-digit OTP");
 
     try {
       setLoading(true);
 
+      console.log("Sending OTP verify request:", { emailOrPhone, otp: code });
+
       const res = await api.post("/verify-otp", {
-        emailOrPhone,
+        emailOrPhone: emailOrPhone.trim(),
         otp: code,
       });
 
+      console.log("Verify response:", res.data);
+
       toast.success(res.data.message);
-      window.location.href = "/dashboard";
+
+      localStorage.setItem("token", res.data.token);
+
+      const interestCheck = await api.get("/interest/has-interest");
+      if (interestCheck.data.hasInterest) navigate("/dashboard");
+      else navigate("/save-interest");
     } catch (err) {
+      console.error("Verify OTP error:", err.response?.data);
       toast.error(err.response?.data?.error || "Invalid OTP");
     } finally {
       setLoading(false);
     }
   };
 
-  // Resend OTP
+
   const handleResend = async () => {
-    if (!emailOrPhone) {
-      toast.error("Missing email/phone");
-      return;
-    }
+    if (!emailOrPhone) return toast.error("Missing email/phone");
 
     try {
       setResendLoading(true);
-      const res = await api.post("/resend-otp", { emailOrPhone });
+
+      console.log("Resend OTP request for:", emailOrPhone);
+
+      const res = await api.post("/resend-otp", { emailOrPhone: emailOrPhone.trim() });
+
+      console.log("Resend response:", res.data);
 
       toast.success(res.data.message || "OTP resent");
+      setOtp(["", "", "", "", "", ""]); 
       setTimer(30);
+      inputsRef.current[0].focus();
     } catch (err) {
+      console.error("Resend OTP error:", err.response?.data);
       toast.error(err.response?.data?.error || "Failed to resend OTP");
     } finally {
       setResendLoading(false);
@@ -108,10 +115,11 @@ export default function OTPPage({ emailOrPhone: propEmail }) {
   return (
     <>
       <TopBar />
-
       <div className="otp-container">
         <h2>Enter OTP</h2>
-        <p>We sent a 6-digit code to: <strong>{emailOrPhone}</strong></p>
+        <p>
+          We sent a 6-digit code to: <strong>{emailOrPhone}</strong>
+        </p>
 
         <form onSubmit={handleSubmit} className="otp-form">
           <div className="otp-inputs">
@@ -129,7 +137,6 @@ export default function OTPPage({ emailOrPhone: propEmail }) {
               />
             ))}
           </div>
-
           <button type="submit" className="otp-submit-btn" disabled={loading}>
             {loading ? "Verifying..." : "Verify OTP"}
           </button>
@@ -151,7 +158,6 @@ export default function OTPPage({ emailOrPhone: propEmail }) {
           )}
         </div>
       </div>
-
       <Footer />
     </>
   );
