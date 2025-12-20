@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TopBar from "../../components/TopBar";
 import Footer from "../../components/Footer";
 import "../../app.css";
-import api from "../../axios";
+import {api1, api2} from "../../axios";
 import { toast } from "react-toastify";
 
 export default function Register() {
@@ -17,16 +17,16 @@ export default function Register() {
 
     const form = { fullname, phone, email, password };
 
-    setLoading(true); // START loading
+    setLoading(true); 
 
     try {
-      const res = await api.post("/register", form);
+      const res = await api1.post("/register", form);
       console.log(res.data);
 
       toast.success("Registered successfully");
 
       setTimeout(() => {
-        window.location.href = "/login"; // FIXED redirect
+        window.location.href = "/login"; 
       }, 1000);
     } catch (err) {
         const message =
@@ -36,7 +36,7 @@ export default function Register() {
 
   toast.error(message);
     } finally {
-      setLoading(false); // STOP loading
+      setLoading(false); 
     }
   };
 

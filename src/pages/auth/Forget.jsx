@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Footer from "../../components/Footer";
 import TopBar from "../../components/TopBar";
 import "../../app.css";
-import api from "../../axios";
+import {api1, api2} from "../../axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +22,7 @@ export default function Forget() {
     try {
       setLoading(true);
 
-      const res = await api.post("/forgot-password", {
+      const res = await api1.post("/forgot-password", {
         emailOrPhone: emailOrPhone.trim(),
       });
 

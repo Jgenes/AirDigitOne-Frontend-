@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import TopBar from "../../components/TopBar";
 import Footer from "../../components/Footer";
-import api from "../../axios";
+import {api1, api2} from "../../axios";
 import { toast } from "react-toastify";
 import "../../app.css";
 
@@ -30,7 +30,7 @@ export default function ResetPassword() {
     try {
       setLoading(true);
 
-      const res = await api.post(`/reset-password/${token}`, {
+      const res = await api1.post(`/reset-password/${token}`, {
         newPassword,
       });
 

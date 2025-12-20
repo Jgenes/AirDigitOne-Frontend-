@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { toast } from "react-toastify";
-import api from "../../axios";
+import {api1, api2} from "../../axios";
 import TopBar from "../../components/TopBar";
 import Footer from "../../components/Footer";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -52,7 +52,7 @@ export default function OTPPage({ emailOrPhone: propEmail }) {
     }
   };
 
-  
+  // ---------------- OTP VERIFY FIXED ----------------
   const handleSubmit = async (e) => {
     e.preventDefault();
     const code = otp.join("").trim();
@@ -65,7 +65,7 @@ export default function OTPPage({ emailOrPhone: propEmail }) {
 
       console.log("Sending OTP verify request:", { emailOrPhone, otp: code });
 
-      const res = await api.post("/verify-otp", {
+      const res = await api1.post("/verify-otp", {
         emailOrPhone: emailOrPhone.trim(),
         otp: code,
       });
@@ -74,11 +74,16 @@ export default function OTPPage({ emailOrPhone: propEmail }) {
 
       toast.success(res.data.message);
 
+      // save token
       localStorage.setItem("token", res.data.token);
 
-      const interestCheck = await api.get("/interest/has-interest");
-      if (interestCheck.data.hasInterest) navigate("/dashboard");
-      else navigate("/save-interest");
+      // USE BACKEND RESULT (NO NEED TO CALL /interest/has-interest)
+      if (res.data.hasInterest) {
+        navigate("/dashboard");
+      } else {
+        navigate("/save-interest");
+      }
+
     } catch (err) {
       console.error("Verify OTP error:", err.response?.data);
       toast.error(err.response?.data?.error || "Invalid OTP");
@@ -86,7 +91,6 @@ export default function OTPPage({ emailOrPhone: propEmail }) {
       setLoading(false);
     }
   };
-
 
   const handleResend = async () => {
     if (!emailOrPhone) return toast.error("Missing email/phone");
@@ -96,12 +100,12 @@ export default function OTPPage({ emailOrPhone: propEmail }) {
 
       console.log("Resend OTP request for:", emailOrPhone);
 
-      const res = await api.post("/resend-otp", { emailOrPhone: emailOrPhone.trim() });
+      const res = await api1.post("/resend-otp", { emailOrPhone: emailOrPhone.trim() });
 
       console.log("Resend response:", res.data);
 
       toast.success(res.data.message || "OTP resent");
-      setOtp(["", "", "", "", "", ""]); 
+      setOtp(["", "", "", "", "", ""]);
       setTimer(30);
       inputsRef.current[0].focus();
     } catch (err) {
