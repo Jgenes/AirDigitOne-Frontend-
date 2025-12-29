@@ -13,7 +13,12 @@ import Dashboard from './pages/Dashboard';
 import Vacancy from './pages/vacancy/Vacancy';
 import VacancyPerCategory from './pages/vacancy/VacancyPerCategory';
 import EmployerRegister from './pages/employer/register';
-
+import EmployerOnboarding from './pages/employer/onBoarding';
+import WaitVerifications from './pages/employer/waitVerifications';
+import HomeDashboard from './pages/employer/dashboard/pages/dashboard';
+import AdminDashboard from './pages/admin/dashboard/pages/AdminDashboard';
+import EmployerVerification from './pages/admin/dashboard/pages/Verifications';
+import EmployerJobs from './pages/employer/dashboard/pages/EmployerJobs';
 function App() {
   const [count, setCount] = useState(0)
 
@@ -37,6 +42,12 @@ function App() {
         <Route path='/jobs' element={<Vacancy />} />
         <Route path='/jobs/category/:id' element={<VacancyPerCategory />} />
         <Route path='/employer/register' element={<EmployerRegister />} />
+        <Route path='/employer/onboarding' element={<EmployerOnboarding />} />
+        <Route path='/employer/wait-verification' element={<WaitVerifications />} />
+        <Route path='/employer/dashboard' element={<HomeDashboard />} />
+        <Route path='/admin/dashboard' element={<AdminDashboard />} />
+        <Route path='/admin/employer-verifications' element={<EmployerVerification />} />
+        <Route path='/admin/employer-jobs' element={<EmployerJobs />} />
       </Routes>
     </>
   )

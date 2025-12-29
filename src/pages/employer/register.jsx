@@ -1,7 +1,7 @@
 import TopBar from "../../components/TopBar";
 import Footer from "../../components/Footer";
 import "../../app.css";
-import { api2 } from "../../axios"; // Make sure this points to the right API instance
+import { api2 } from "../../axios"; // Make sure this points to your API instance
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -9,9 +9,10 @@ import { useState } from "react";
 export default function EmployerRegister() {
   const [formData, setFormData] = useState({
     name: "",
+    company: "",
+    owner: "",
     email: "",
     password: "",
-    company: "",
     phone: "",
     sector: "",
     address: ""
@@ -21,27 +22,28 @@ export default function EmployerRegister() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Basic client-side validation
+  // ---------------- Validation ----------------
   const validate = (data) => {
     const e = {};
-    if (!data.name.trim()) e.name = "Name is required";
+    if (!data.name.trim()) e.name = "Full name is required";
+    if (!data.company.trim()) e.company = "Company name is required";
+    if (!data.owner.trim()) e.owner = "Owner name is required";
     if (!data.email.trim()) e.email = "Email is required";
     else if (!/^\S+@\S+\.\S+$/.test(data.email)) e.email = "Enter a valid email";
     if (!data.password) e.password = "Password is required";
     else if (data.password.length < 6) e.password = "Password must be at least 6 characters";
-    if (!data.company.trim()) e.company = "Company is required";
     return e;
   };
 
+  // ---------------- Handle Change ----------------
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // ---------------- Handle Submit ----------------
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const validation = validate(formData);
     setErrors(validation);
     if (Object.keys(validation).length > 0) {
@@ -51,20 +53,23 @@ export default function EmployerRegister() {
 
     setLoading(true);
     try {
-      // Ensure correct API endpoint is being used: /api/v1/employer/register
-      const res = await api2.post("/employers/register", {
-        company_name: formData.company,   // Backend expects 'company_name'
+      const res = await api2.post("/employer/register", {
+        fullname: formData.name,
+        company_name: formData.company,
+        owner_name: formData.owner,
         email: formData.email,
         password: formData.password,
-        phone: formData.phone || "",   // Optional fields
+        phone: formData.phone || "",
         sector: formData.sector || "",
         address: formData.address || "",
       });
-      toast.success("Registration successful");
-      navigate('/login'); // Redirect to login after successful registration
+
+      toast.success("Registration successful! Check your email to activate.");
+      navigate("/login");
+
     } catch (err) {
-      const msg = err?.response?.data?.message || "Registration failed";
-      toast.error(msg);
+      console.error(err.response?.data);
+      toast.error(err.response?.data?.error || "Registration failed");
     } finally {
       setLoading(false);
     }
@@ -76,8 +81,9 @@ export default function EmployerRegister() {
       <div className="container">
         <h2>Employer Registration</h2>
         <form onSubmit={handleSubmit} className="employer-register-form">
+
           <div className="form-group">
-            <label htmlFor="name">Full name</label>
+            <label htmlFor="name">Full Name</label>
             <input
               id="name"
               type="text"
@@ -91,12 +97,40 @@ export default function EmployerRegister() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">Email address</label>
+            <label htmlFor="company">Company Name</label>
+            <input
+              id="company"
+              type="text"
+              name="company"
+              placeholder="ACME Ltd"
+              value={formData.company}
+              onChange={handleChange}
+              aria-invalid={errors.company ? "true" : "false"}
+            />
+            {errors.company && <div className="form-error">{errors.company}</div>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="owner">Owner Name</label>
+            <input
+              id="owner"
+              type="text"
+              name="owner"
+              placeholder="John Doe"
+              value={formData.owner}
+              onChange={handleChange}
+              aria-invalid={errors.owner ? "true" : "false"}
+            />
+            {errors.owner && <div className="form-error">{errors.owner}</div>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="email">Email Address</label>
             <input
               id="email"
               type="email"
               name="email"
-              placeholder="you@company.com"
+              placeholder="hr@company.com"
               value={formData.email}
               onChange={handleChange}
               aria-invalid={errors.email ? "true" : "false"}
@@ -119,50 +153,36 @@ export default function EmployerRegister() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="company">Company</label>
-            <input
-              id="company"
-              type="text"
-              name="company"
-              placeholder="Company name"
-              value={formData.company}
-              onChange={handleChange}
-              aria-invalid={errors.company ? "true" : "false"}
-            />
-            {errors.company && <div className="form-error">{errors.company}</div>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="phone">Phone</label>
+            <label htmlFor="phone">Phone (optional)</label>
             <input
               id="phone"
               type="text"
               name="phone"
-              placeholder="Your phone number"
+              placeholder="+255712345678"
               value={formData.phone}
               onChange={handleChange}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="sector">Sector</label>
+            <label htmlFor="sector">Sector (optional)</label>
             <input
               id="sector"
               type="text"
               name="sector"
-              placeholder="Sector of business"
+              placeholder="Fintech"
               value={formData.sector}
               onChange={handleChange}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="address">Address</label>
+            <label htmlFor="address">Address (optional)</label>
             <input
               id="address"
               type="text"
               name="address"
-              placeholder="Business address"
+              placeholder="123 Market St, Dar es Salaam"
               value={formData.address}
               onChange={handleChange}
             />
@@ -170,7 +190,7 @@ export default function EmployerRegister() {
 
           <div className="form-actions">
             <button type="submit" className="btn-primary" disabled={loading}>
-              {loading ? 'Registering...' : 'Register'}
+              {loading ? "Registering..." : "Register"}
             </button>
           </div>
         </form>
